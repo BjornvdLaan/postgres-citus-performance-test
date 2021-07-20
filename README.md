@@ -19,6 +19,7 @@ We have three tables that are commonly found in a data vault model: a Hub, a Sat
 
 In this experiment, we want to find out the performance of COPY-ing data into the tables and for retrieving the data again.
 We apply distribution using Citus and create indexes, with the goal to see how these impact that performance.
+Then, we also retrieve everything we have inserted into the three tables to see the performance on that end.
 This is an initial exploration of how to build a Data Vault model in Azure PostgreSQL Hyperscale.
 
 ## Parameters

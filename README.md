@@ -15,7 +15,7 @@ python generate-csv.py
 ## The experiment
 We have three tables that are commonly found in a data vault model: a Hub, a Satellite and a Reference table. They are described in the diagram below.
 
-![](datamodel.png)
+![](datamodel/datamodel.png)
 
 In this experiment, we want to find out the performance of COPY-ing data into the tables and for retrieving the data again.
 We apply distribution using Citus and create indexes, with the goal to see how these impact that performance.

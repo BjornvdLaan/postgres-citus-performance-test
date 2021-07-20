@@ -2,6 +2,8 @@ import csv
 import hashlib
 from datetime import timedelta, datetime
 
+BASE_PATH = "./csv"
+
 TYPE_CODES = [
     "COLO",
     "DELO",
@@ -24,7 +26,7 @@ TYPE_CODES = [
 
 
 def generate_hub_and_sat_test_data(number_of_hub_inserts, number_of_sat_inserts_per_hub):
-    with open(f"./hub_{number_of_hub_inserts}.csv", "w+") as f:
+    with open(f"{BASE_PATH}/hub_{number_of_hub_inserts}.csv", "w+") as f:
         writer = csv.writer(f)
         start_date = datetime(2020,1,1,2,0)
         sat_inserts = []
@@ -51,7 +53,7 @@ def generate_hub_and_sat_test_data(number_of_hub_inserts, number_of_sat_inserts_
                     TYPE_CODES[j % len(TYPE_CODES)]
                 ])
         
-        with open(f"./sat_{number_of_hub_inserts * number_of_sat_inserts_per_hub}.csv", "w+") as g:
+        with open(f"{BASE_PATH}/sat_{number_of_hub_inserts * number_of_sat_inserts_per_hub}.csv", "w+") as g:
             sat_writer = csv.writer(g)
             sat_writer.writerows(sat_inserts)
 
@@ -82,7 +84,7 @@ RESMORTSPEND{x}, RESIDENTIAL MORTGAGE SPENDING ACCOUNT TYPE {x}, RESIDENTIAL MOR
         raise ValueError("Number of reference inserts should be multiple of 20.")
 
     number_of_templates = int(number_of_reference_inserts / 20)
-    with open(f"./reference_{number_of_reference_inserts}.csv", "w+") as f:
+    with open(f"{BASE_PATH}/reference_{number_of_reference_inserts}.csv", "w+") as f:
         f.write(
             "\n".join([template(i) for i in range(number_of_templates)])
         )

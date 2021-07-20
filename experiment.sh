@@ -12,11 +12,11 @@ psql_call_with_timing() {
 }
 
 psql_call_sql_script() {
-    psql -h $HOSTNAME -d $DBNAME -U $USER < $@
+    psql -h $HOSTNAME -d $DBNAME -U $USER < sql/$@
 }
 
 psql_call_sql_script_with_timing() {
-    psql -h $HOSTNAME -d $DBNAME -U $USER < $@
+    psql -h $HOSTNAME -d $DBNAME -U $USER < sql/$@
 }
 
 psql_truncate() {
@@ -25,15 +25,15 @@ psql_truncate() {
 }
 
 psql_hub_insert() {
-    cat hub_$1.csv | psql_call_with_timing "\COPY hub_agreement(primary_key, unq_ar_id, rec_src, load_dts) FROM STDIN WITH(FORMAT CSV, DELIMITER ',', HEADER FALSE);"
+    cat csv/hub_$1.csv | psql_call_with_timing "\COPY hub_agreement(primary_key, unq_ar_id, rec_src, load_dts) FROM STDIN WITH(FORMAT CSV, DELIMITER ',', HEADER FALSE);"
 }
 
 psql_sat_insert() {
-    cat sat_$1.csv | psql_call_with_timing "\COPY sat_agreement(primary_key, load_dts, rec_src, hash_diff, principal, interest, maturity_date, product_code) FROM STDIN WITH(FORMAT CSV, DELIMITER ',', HEADER FALSE);"
+    cat csv/sat_$1.csv | psql_call_with_timing "\COPY sat_agreement(primary_key, load_dts, rec_src, hash_diff, principal, interest, maturity_date, product_code) FROM STDIN WITH(FORMAT CSV, DELIMITER ',', HEADER FALSE);"
 }
 
 psql_reference_insert() {
-    cat reference_$1.csv | psql_call_with_timing "\COPY ref_products(product_code, product_name, product_category, load_dts, rec_src) FROM STDIN WITH(FORMAT CSV, DELIMITER ',', HEADER FALSE);" -c "TRUNCATE ref_products CASCADE;"
+    cat csv/reference_$1.csv | psql_call_with_timing "\COPY ref_products(product_code, product_name, product_category, load_dts, rec_src) FROM STDIN WITH(FORMAT CSV, DELIMITER ',', HEADER FALSE);" -c "TRUNCATE ref_products CASCADE;"
 }
 
 psql_execute_experiment() {

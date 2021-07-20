@@ -1,0 +1,42 @@
+@startuml datamodel
+left to right direction
+
+' hide the spot
+hide circle
+
+' avoid problems with angled crows feet
+skinparam linetype ortho
+
+entity hub_agreement {
+    *primary_key <<PK>>
+    --
+    unq_ar_id
+    rec_src
+    load_dts
+}
+
+entity sat_agreement {
+    *customer number <<PK,FK>>
+    *load_dts <<PK>>
+    --
+    rec_src
+    hash_diff
+    principal
+    interesr
+    maturity_date
+    product_code
+}
+
+entity ref_products {
+    *product_code <<PK>>
+    --
+    product_name
+    product_category
+    load_dts
+    rec_src
+}
+
+hub_agreement ||--o{ sat_agreement
+sat_agreement -- ref_products
+
+@enduml

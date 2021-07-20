@@ -65,7 +65,8 @@ psql_distribute_on_descriptive() {
 
 ## Script starts here
 
-psql_call_sql_script set-up-tables.sql
+echo "Experiment initiated.."
+psql_call_sql_script set_up_tables.sql
 
 NUM_OF_HUBS=10000
 

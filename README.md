@@ -1,12 +1,25 @@
 # Testing performance with PostgreSQL and Citus in Data Vault tables
 
-We have three common data vault tables: a Hub, a Satellite and a Reference table.
-In this experiment, we want to find out the performance of COPY-ing data into the tables and for retrieving the data again.
-We apply distribution using Citus and create indexes, with the goal to see how these impact that performance.
-This is an initial exploration of how to build a Data Vault model in Azure PostgreSQL Hyperscale.
-
-We always have 10000 Hub inserts and then the Sat and Reference table inserts are a multiple of that.
+This repository contains scripts to assess the performance of a PostgreSQL Citus database. The experiment can be run using the following command:
 
 ```
 bash experiment.sh <hostname> <dbname> <user>
 ```
+
+The script assumes that the test data csv's are available. These can be generated using the included Python script:
+
+```
+python generate-csv.py
+```
+
+## The experiment
+We have three tables that are commonly found in a data vault model: a Hub, a Satellite and a Reference table. They are described in the diagram below.
+
+![](datamodel.png)
+
+In this experiment, we want to find out the performance of COPY-ing data into the tables and for retrieving the data again.
+We apply distribution using Citus and create indexes, with the goal to see how these impact that performance.
+This is an initial exploration of how to build a Data Vault model in Azure PostgreSQL Hyperscale.
+
+## Parameters
+We always have 10000 Hub inserts and then the Sat and Reference table inserts are a multiple of that (multipliers: 10, 100, 500, 2500, 10000, 50000).

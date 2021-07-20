@@ -82,7 +82,7 @@ psql_call_sql_script set_up_tables.sql
 
 NUM_OF_HUBS=10000
 
-for NUM_OF_SATS_AND_REFS in 10 100 500 2500 10000 50000
+for NUM_OF_SATS_AND_REFS in 10 
 do
     echo "Without anything"
     psql_execute_experiment $NUM_OF_HUBS $NUM_OF_SATS_AND_REFS

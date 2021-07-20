@@ -50,7 +50,7 @@ def generate_hub_and_sat_test_data(number_of_hub_inserts, number_of_sat_inserts_
                     j % 100000,
                     j % 25,
                     (start_date + timedelta(days=i + (10*j))),
-                    TYPE_CODES[j % len(TYPE_CODES)]
+                    f"{TYPE_CODES[j % len(TYPE_CODES)]}{j % 20}"
                 ])
         
         with open(f"{BASE_PATH}/sat_{number_of_hub_inserts * number_of_sat_inserts_per_hub}.csv", "w+") as g:
@@ -95,7 +95,7 @@ def main():
     number_of_hub_inserts = 10000
 
     # We want 10000, 100000, 500000, 2500000, 10000000, 50000000 inserts into Sat and Reference
-    for i in [10, 100, 500, 2500, 10000, 50000]:
+    for i in [10]:#, 100, 500, 2500, 10000, 50000]:
         generate_hub_and_sat_test_data(number_of_hub_inserts, i)
         generate_reference_test_data(number_of_hub_inserts * i)
 

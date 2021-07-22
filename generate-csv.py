@@ -94,10 +94,10 @@ def main():
     # The number of hubs is always 10000
     number_of_hub_inserts = 10000
 
-    # We want 10000, 100000, 500000, 2500000, 10000000, 50000000 inserts into Sat and Reference
-    for i in [10]:#, 100, 500, 2500, 10000, 50000]:
-        generate_hub_and_sat_test_data(number_of_hub_inserts, i)
-        generate_reference_test_data(number_of_hub_inserts * i)
+    # We want 100.000, 1.000.000, 5.000.000, 25.000.000, 100.000.000, 500.000.000 inserts into Sat and Reference
+    for multiplier in [10, 100, 500, 2500, 10000, 50000]:
+        generate_hub_and_sat_test_data(number_of_hub_inserts, multiplier)
+        generate_reference_test_data(number_of_hub_inserts * multiplier)
 
 if __name__ == "__main__":
     main()

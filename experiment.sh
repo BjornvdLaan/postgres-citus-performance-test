@@ -54,10 +54,10 @@ psql_execute_experiment() {
     echo "$(( $1*$2 )) Ref insertions"
     psql_reference_insert $(( $1*$2 )) $3
 
-    echo "Querying all $1 Hub entries,  $(( $1*$2 )) Sat entries"
+    echo "Querying all $1 Hub entries, $(( $1*$2 )) Sat entries"
     psql_call_sql_script_print_time_to_file select_all.sql "$3-select-hub-$1-sat-$(( $1*$2 ))-ref-0.txt"
 
-    echo "Querying all $1 Hub entries,  $(( $1*$2 )) Sat entries and $(( $1*$2 )) Reference entries"
+    echo "Querying all $1 Hub entries, $(( $1*$2 )) Sat entries and $(( $1*$2 )) Reference entries"
     psql_call_sql_script_print_time_to_file select_all_with_ref.sql "$3-select-hub-$1-sat-$(( $1*$2 ))-ref-$(( $1*$2 )).txt"
 
     psql_truncate

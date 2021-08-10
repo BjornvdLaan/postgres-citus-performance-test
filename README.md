@@ -23,4 +23,6 @@ Then, we also retrieve everything we have inserted into the three tables to see 
 This is an initial exploration of how to build a Data Vault model in Azure PostgreSQL Hyperscale.
 
 ## Parameters
-We always have 10000 Hub inserts and then the Sat and Reference table inserts are a multiple of that (multipliers: 10, 100, 500, 2500, 10000, 50000).
+We always have 10000 Hub inserts and then the Sat and Reference table inserts are a multiple of that (multipliers: 1, 10, 100, 500, 2500).
+You can also configure the number of times you want to execute the experiment. This can be convenient if you let your machine run during the night. Regardless of whether you configure the number of runs or you just call the script multiple times, the results are always appended (so not overwritten) into the appropriate file.
+This way you always have all test results from a specific combination of parameters in one file together.

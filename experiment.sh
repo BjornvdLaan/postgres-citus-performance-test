@@ -41,7 +41,7 @@ psql_sat_insert() {
 }
 
 psql_reference_insert() {
-    cat csv/reference_$1.csv | psql_call_with_timing "\COPY ref_products(product_code, product_name, product_category, load_dts, rec_src) FROM STDIN WITH(FORMAT CSV, DELIMITER ',', HEADER FALSE);" -c "TRUNCATE ref_products CASCADE;" "$2-insert-ref-$1.txt"
+    cat csv/reference_$1.csv | psql_call_with_timing_to_file "\COPY ref_products(product_code, product_name, product_category, load_dts, rec_src) FROM STDIN WITH(FORMAT CSV, DELIMITER ',', HEADER FALSE);" "$2-insert-ref-$1.txt"
 }
 
 psql_execute_experiment() {
@@ -91,18 +91,21 @@ psql_call_sql_script set_up_tables.sql
 NUM_OF_RUNS=1
 NUM_OF_HUBS=10000
 
-# Perform multiple runs to later calculate an average
+# Perform multiple runs if you need (useful when you let it run during night)
 for RUN_ID in $(seq 1 $NUM_OF_RUNS)
 do
-    # Multipliers: 10, 100, 500, 2500, 10000, 50000
-    for NUM_OF_SATS_AND_REFS in 10 
+    echo "Run $RUN_ID"
+    # Multipliers: 1, 10, 100, 500, 2500
+    for NUM_OF_SATS_AND_REFS in 1 10 100 500 2500
     do
+        echo "Run $RUN_ID, multiplier = $NUM_OF_SATS_AND_REFS"
+
         echo "Executing experiment in base scenario.."
-        psql_execute_experiment $NUM_OF_HUBS $NUM_OF_SATS_AND_REFS "$RUN_ID-base-scenario"
+        psql_execute_experiment $NUM_OF_HUBS $NUM_OF_SATS_AND_REFS "base-scenario"
 
         echo "Executing experiment with distributed tables.."
         psql_distribute_on_pk
-        psql_execute_experiment $NUM_OF_HUBS $NUM_OF_SATS_AND_REFS "$RUN_ID-distribute-pk-scenario"
+        psql_execute_experiment $NUM_OF_HUBS $NUM_OF_SATS_AND_REFS "distribute-pk-scenario"
         psql_undistribute
     done
 done

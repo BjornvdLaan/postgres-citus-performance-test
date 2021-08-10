@@ -2,4 +2,3 @@ run.sh
 hub_*.csv
 sat_*.csv
 reference_*.csv
-results

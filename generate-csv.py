@@ -26,6 +26,13 @@ TYPE_CODES = [
 
 
 def generate_hub_and_sat_test_data(number_of_hub_inserts, number_of_sat_inserts_per_hub):
+    """
+    Generates the contents of the hub and satellite tables.
+
+    Args:
+        number_of_hub_inserts (int): number of rows in the hub
+        number_of_sat_inserts_per_hub (int): number of rows in the satellite per hub entry
+    """    
     with open(f"{BASE_PATH}/hub_{number_of_hub_inserts}.csv", "w+") as f:
         writer = csv.writer(f)
         start_date = datetime(2020,1,1,2,0)
@@ -59,6 +66,13 @@ def generate_hub_and_sat_test_data(number_of_hub_inserts, number_of_sat_inserts_
 
 
 def generate_reference_test_data(number_of_reference_inserts):
+    """
+    Generates the contents of the reference table.
+
+    Args:
+        number_of_reference_inserts (int): number of rows for your reference table, must be a multiple of 20.
+    """    
+
     template = lambda x: f"""COLO{x}, COLLATERALIZED LOAN TYPE {x}, LOAN AGREEMENT,2020-01-01 02:00:00,system of records
 DELO{x}, DEMAND LOAN TYPE {x}, LOAN AGREEMENT,2020-01-01 02:00:00,system of records
 LTL{x}, LONG TERM LOAN TYPE {x}, LOAN AGREEMENT,2020-01-01 02:00:00,system of records

@@ -45,8 +45,6 @@ psql_reference_insert() {
 }
 
 psql_execute_experiment() {
-    psql_truncate
-
     echo "$1 Hub insertions"
     psql_hub_insert $1 $3
     echo "$(( $1*$2 )) Sat insertions"
@@ -54,13 +52,26 @@ psql_execute_experiment() {
     echo "$(( $1*$2 )) Ref insertions"
     psql_reference_insert $(( $1*$2 )) $3
 
+    # SELECT ALL DATA
     echo "Querying all $1 Hub entries, $(( $1*$2 )) Sat entries"
     psql_call_sql_script_print_time_to_file select_all.sql "$3-select-hub-$1-sat-$(( $1*$2 ))-ref-0.txt"
 
     echo "Querying all $1 Hub entries, $(( $1*$2 )) Sat entries and $(( $1*$2 )) Reference entries"
     psql_call_sql_script_print_time_to_file select_all_with_ref.sql "$3-select-hub-$1-sat-$(( $1*$2 ))-ref-$(( $1*$2 )).txt"
 
-    psql_truncate
+    # AGGREGATION: COUNT
+    echo "Counting all $1 Hub entries by Product Code found in Sat"
+    psql_call_sql_script_print_time_to_file count_by_product_code.sql "$3-select-agg-count-group-by-product-code-hub-$1-sat-$(( $1*$2 ))-ref-0.txt"
+
+    echo "Counting all $1 Hub entries by Product Group found in Ref via Sat"
+    psql_call_sql_script_print_time_to_file count_by_product_category_with_ref.sql "$3-select-agg-count-group-by-product-category-hub-$1-sat-$(( $1*$2 ))-ref-$(( $1*$2 )).txt"
+
+    # AGGREGATION: SUM
+    echo "Summing principal of all $1 Hub entries by Product Code found in Sat ($(( $1*$2 )) entries)"
+    psql_call_sql_script_print_time_to_file sum_principal_by_product_code.sql.sql "$3-select-agg-sum-group-by-product-code-hub-$1-sat-$(( $1*$2 ))-ref-0.txt"
+
+    echo "Summing principal of all $1 Hub entries by Product Group found in Ref ($(( $1*$2 )) entries) via Sat ($(( $1*$2 )) entries)"
+    psql_call_sql_script_print_time_to_file sum_principal_by_product_category_with_ref.sql "$3-select-agg-sum-group-by-product-category-hub-$1-sat-$(( $1*$2 ))-ref-$(( $1*$2 )).txt"
 }
 
 psql_create_indexes() {
@@ -83,10 +94,11 @@ psql_distribute_on_descriptive() {
     psql_call_sql_script distribute_on_descriptive.sql
 }
 
-# Script starts here
+psql_set_up_tables() {
+    psql_call_sql_script set_up_tables.sql
+}
 
-echo "Experiment initiated.."
-psql_call_sql_script set_up_tables.sql
+# Script starts here
 
 NUM_OF_RUNS=1
 NUM_OF_HUBS=10000
@@ -100,13 +112,18 @@ do
     do
         echo "Run $RUN_ID, multiplier = $NUM_OF_SATS_AND_REFS"
 
+        echo "Setting up tables"
+        psql_set_up_tables
+
         echo "Executing experiment in base scenario.."
         psql_execute_experiment $NUM_OF_HUBS $NUM_OF_SATS_AND_REFS "base-scenario"
+
+        echo "Setting up tables"
+        psql_set_up_tables
 
         echo "Executing experiment with distributed tables.."
         psql_distribute_on_pk
         psql_execute_experiment $NUM_OF_HUBS $NUM_OF_SATS_AND_REFS "distribute-pk-scenario"
-        psql_undistribute
     done
 done
 

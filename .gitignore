@@ -3,3 +3,4 @@ hub_*.csv
 sat_*.csv
 reference_*.csv
 results
+.DS_Store

@@ -2,6 +2,7 @@
 HOSTNAME=$1
 DBNAME=$2
 USER=$3
+NUM_OF_RUNS=${4:-1}
 
 psql_call() {
     psql -h $HOSTNAME -d $DBNAME -U $USER -c "$1"
@@ -100,7 +101,6 @@ psql_set_up_tables() {
 
 # Script starts here
 
-NUM_OF_RUNS=1
 NUM_OF_HUBS=10000
 
 # Perform multiple runs if you need (useful when you let it run during night)

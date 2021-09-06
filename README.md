@@ -3,7 +3,7 @@
 This repository contains scripts to assess the performance of a PostgreSQL Citus database. The experiment can be run using the following command:
 
 ```
-bash experiment.sh <hostname> <dbname> <user>
+bash experiment.sh <hostname> <dbname> <user> [number of runs, optional]
 ```
 
 The script assumes that the test data csv's are available. These can be generated using the included Python script:

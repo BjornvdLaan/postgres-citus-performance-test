@@ -33,7 +33,9 @@ def generate_hub_and_sat_test_data(number_of_hub_inserts, number_of_sat_inserts_
         number_of_hub_inserts (int): number of rows in the hub
         number_of_sat_inserts_per_hub (int): number of rows in the satellite per hub entry
     """    
-    with open(f"{BASE_PATH}/hub_{number_of_hub_inserts}.csv", "w+") as f:
+    hub_file_name = f"{BASE_PATH}/hub_{number_of_hub_inserts}.csv"
+    with open(hub_file_name, "w+") as f:
+        print(f"Generating file: {hub_file_name}")
         writer = csv.writer(f)
         start_date = datetime(2020,1,1,2,0)
         sat_inserts = []
@@ -60,7 +62,9 @@ def generate_hub_and_sat_test_data(number_of_hub_inserts, number_of_sat_inserts_
                     f"{TYPE_CODES[j % len(TYPE_CODES)]}{j % 20}"
                 ])
         
-        with open(f"{BASE_PATH}/sat_{number_of_hub_inserts * number_of_sat_inserts_per_hub}.csv", "w+") as g:
+        sat_file_name = f"{BASE_PATH}/sat_{number_of_hub_inserts * number_of_sat_inserts_per_hub}.csv"
+        with open(sat_file_name, "w+") as g:
+            print(f"Generating file: {sat_file_name}")
             sat_writer = csv.writer(g)
             sat_writer.writerows(sat_inserts)
 
@@ -98,7 +102,9 @@ RESMORTSPEND{x}, RESIDENTIAL MORTGAGE SPENDING ACCOUNT TYPE {x}, RESIDENTIAL MOR
         raise ValueError("Number of reference inserts should be multiple of 20.")
 
     number_of_templates = int(number_of_reference_inserts / 20)
-    with open(f"{BASE_PATH}/reference_{number_of_reference_inserts}.csv", "w+") as f:
+    ref_file_name = f"{BASE_PATH}/reference_{number_of_reference_inserts}.csv"
+    with open(ref_file_name, "w+") as f:
+        print(f"Generating file: {ref_file_name}")
         f.write(
             "\n".join([template(i) for i in range(number_of_templates)])
         )
